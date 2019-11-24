@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+const https = require('https');
+const fs = require('fs');
+
+const app = require('../app');
+const chatServer = require('../chat-server/chat-server');
+
+const server = https.createServer(
+  {
+    key: fs.readFileSync('certs/server-key.pem'),
+    cert: fs.readFileSync('certs/server-cert.pem')
+  },
+  app
+);
+chatServer.create(server);
+
+server.listen(process.env.PORT || '3000');
